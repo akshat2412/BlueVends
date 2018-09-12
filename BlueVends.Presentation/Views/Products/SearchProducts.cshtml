@@ -1,0 +1,32 @@
+﻿@model BlueVends.Presentation.ViewModels.ProductsSearchResultViewModel
+
+@{
+    ViewBag.Title = "SearchProducts";
+}
+
+<h2>Search Results</h2>
+
+<div>
+    <h4>Your search " @ViewBag.SearchString "</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<p>
+    @foreach (var item in Model.Products)
+    {
+        <div class="row">
+            <div class="col-md-3" style="padding-bottom : 20px">
+                <img src=@item.ImageURL height="100px" width="100px" />
+
+            </div>
+            <div class="col-md-6">
+                <b>@Html.ActionLink(item.Name, "ProductDetail", new { ProductID = item.ID })</b>
+
+                <div>Rs : @Html.DisplayFor(modelItem => item.ListingPrice)</div>
+                <div>Only @Html.DisplayFor(modelItem => item.Inventory) left in Stock.</div>
+            </div>
+        </div>
+        <br />
+    }
+</p>

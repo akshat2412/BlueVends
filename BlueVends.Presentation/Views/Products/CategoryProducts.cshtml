@@ -1,0 +1,52 @@
+﻿@model BlueVends.Presentation.ViewModels.CategoryProductsViewModel
+
+@{
+    ViewBag.Title = "";
+}
+
+<h2>View</h2>
+
+<div>
+    <h4>Products in @Model.Name  Category</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")*@
+    @*@foreach(var item in Model.Products)
+        {
+        <div class="row">
+            <div class="col-md-3" style="padding-bottom : 20px">
+                <img src=@item.ImageURL height="100px" width="100px" />
+
+            </div>
+            <div class="col-md-6">
+                <b>@Html.ActionLink(item.Name, "ProductDetail", new { ProductID = item.ID })</b>
+
+                <div>Rs : @Html.DisplayFor(modelItem => item.ListingPrice)</div>
+                <div>Only @Html.DisplayFor(modelItem => item.Inventory) left in Stock.</div>
+            </div>
+        </div>
+        <br />
+        }*@
+
+    <div class="row row-pb-md">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-3 col-lg-3 mb-4 text-center">
+                <div class="product-entry border">
+                    <a href="@Url.Action("ProductDetail", "Products", new { ProductID = product.ID})">
+                        <img src = "@product.ImageURL" class="img-fluid" alt="Free html5 bootstrap 4 template" style=" height:160px;width:140px;">
+                    </a>
+                    <div class="desc">
+                        <h2><a href="#">@product.Name</a></h2>
+                        <span class="price">$@product.ListingPrice</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</p>

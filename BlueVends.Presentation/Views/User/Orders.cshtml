@@ -1,0 +1,24 @@
+﻿@model BlueVends.Presentation.ViewModels.OrdersViewModel
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Orders</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<p>
+    @foreach(var item in Model.Orders)
+    {
+        <ul>
+            <li>@item.OrderDate</li>
+            <li>@item.Status</li>
+            <li>Totel =  @item.TotalDue</li>
+            @Html.ActionLink("View Details", "Order", "User")
+        </ul>
+    }
+</p>

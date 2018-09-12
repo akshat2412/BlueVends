@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ff433528ffc448828fe4e670cd382f9e" Name="Diagram1">
+        <EntityTypeShape EntityType="BlueVendsDBModel.Address" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.Cart" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.Category" Width="1.5" PointX="1.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.Order" Width="1.5" PointX="7.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.Product" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.ProductImage" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.ProductOrderJunction" Width="1.5" PointX="9.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.Role" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.User" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlueVendsDBModel.Variant" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Address_dbo_User_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Order_dbo_Address_AddressID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Cart_dbo_User_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Cart_dbo_Variant_VariantID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Product_dbo_Category_CategoryID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Order_dbo_User_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_ProductOrderJunction_dbo_Order_OrderID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_ProductImage_dbo_Product_ProductID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_ProductOrderJunction_dbo_Product_ProductID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.FK_dbo_Variant_dbo_Product_ProductID" ManuallyRouted="false" />
+        <AssociationConnector Association="BlueVendsDBModel.UserRole" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
