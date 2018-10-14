@@ -41,10 +41,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DTO\Cart\CartDTO.cs" />
+    <Compile Include="DTO\Cart\CartsDTO.cs" />
+    <Compile Include="DTO\Order\AddressDTO.cs" />
     <Compile Include="DTO\Order\OrderDTO.cs" />
+    <Compile Include="DTO\Order\OrdersDTO.cs" />
+    <Compile Include="DTO\Product\AnalyticsDTO.cs" />
     <Compile Include="DTO\Product\CategoryProductsDTO.cs" />
     <Compile Include="DTO\Product\ProductDTO.cs" />
     <Compile Include="DTO\Product\ProductsSearchResultDTO.cs" />
+    <Compile Include="DTO\Shared\CartVariantDTO.cs" />
     <Compile Include="DTO\Shared\OrderProductDTO.cs" />
     <Compile Include="DTO\User\UserBasicDTO.cs" />
     <Compile Include="DTO\User\UserDTO.cs" />

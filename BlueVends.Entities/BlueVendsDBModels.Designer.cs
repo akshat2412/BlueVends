@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\akshatgupta\Desktop\New folder (3)\BlueVends.Entities\BlueVendsDBModels.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\akshatgupta\Desktop\MVC Final Assignment\BlueVends.Entities\BlueVendsDBModels.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

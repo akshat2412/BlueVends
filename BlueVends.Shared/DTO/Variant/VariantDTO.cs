@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlueVends.Shared.DTO.Product;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace BlueVends.Shared.DTO.Variant
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
+        public ProductDTO Product;
     }
 }

@@ -19,5 +19,6 @@ namespace BlueVends.Shared.DTO.Product
         public string ImageURL { get; set; }
         public IEnumerable<VariantDTO> Variants;
         public System.Guid CategoryID { get; set; }
+        public int DiscountedPrice { get; set; }
     }
 }

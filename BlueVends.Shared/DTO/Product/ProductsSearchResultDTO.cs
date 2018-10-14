@@ -8,6 +8,7 @@ namespace BlueVends.Shared.DTO.Product
 {
     public class ProductsSearchResultDTO
     {
+        public bool IsLoggedIn { get; set; }
         public IEnumerable<ProductDTO> Products { get; set; }
     }
 }

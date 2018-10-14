@@ -1,12 +1,36 @@
-﻿@{
+﻿@model BlueVends.Presentation.ViewModels.AnalyticsViewModel
+@{
     ViewBag.Title = "Home Page";
 }
 
 
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <h1>Home Page</h1>
+<h2>Our top Selling Products</h2>
+@foreach (var category in Model.Categories)
+{
+    <div class="row"><h3>@category.Name</h3></div>
+    <div class="row">
+        <div class="row row-pb-md">
+
+
+            @foreach (var product in category.Products)
+            {
+                <div class="col-md-3 col-lg-3 mb-4 text-center">
+                    <div class="product-entry border">
+                        <a href="@Url.Action("ProductDetail", "Products", new { ProductID = product.ID })">
+                            <img src="@product.ImageURL" class="img-fluid" alt="Free html5 bootstrap 4 template" style=" height:160px;width:140px;">
+                        </a>
+                        <div class="desc">
+                            <h2><a href="@Url.Action("ProductDetail", "Products", new { ProductID = product.ID })">@product.Name</a></h2>
+                            <span class="price">$@product.ListingPrice</span>
+                        </div>
+                        @if (product.Discount != 0)
+                        {
+                            <p>Discount Available</p>
+                        }
+                    </div>
+                </div>
+            }
         </div>
-</div>
+    </div>
+}

@@ -78,5 +78,10 @@ namespace BlueVends.Business.BusinessObjects
             UserOrderDTO newUserOrderDTO = UserDBObject.GetOrder(orderId);
             return newUserOrderDTO;
         }
+
+        public bool CheckAdmin(Guid UserID)
+        {
+            return UserDBObject.CheckAdmin(UserID);
+        }
     }
 }

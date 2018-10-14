@@ -6,96 +6,94 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BlueVends.Business.Exceptions;
+using BlueVends.Presentation.ViewModels;
+using AutoMapper;
+using BlueVends.Shared.DTO.Cart;
+using BlueVends.Shared.DTO.Product;
+using BlueVends.Shared.DTO.Shared;
+using BlueVends.Shared.DTO.Variant;
+
 namespace BlueVends.Presentation.Controllers
 {
     [UserAuthenticationFilter]
     public class CartController : Controller
     {
-        CartBusinessContext cartBusinessContext = new CartBusinessContext();
+        CartBusinessContext cartBusinessContext;
+        IMapper CartMapper;
+        IMapper CartsMapper;
+        public CartController()
+        {
+            cartBusinessContext = new CartBusinessContext();
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<CartViewModel, CartDTO>();
+            });
+
+            var config2 = new MapperConfiguration(cfg => {
+                cfg.CreateMap<ProductDTO, ProductViewModel>();
+                cfg.CreateMap<VariantDTO, VariantViewModel>();
+                cfg.CreateMap<CartVariantDTO, CartVariantViewModel>();
+            });
+
+            CartMapper = new Mapper(config);
+            CartsMapper = new Mapper(config2);
+        }
         // GET: Cart
-        public void AddItem(Guid VariantID)
-        {
-            try
-            {
-                cartBusinessContext.AddItemToCart(new Guid(Session["UserID"].ToString()), VariantID);
-            }
-            catch(ItemAlreadyInCartException ex)
-            {
-                return;
-            }
-            return;
-        }
-
-        // GET: Cart/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Cart/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Cart/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult AddItem([Bind(Include = "VariantID, ProductID, OrderQuantity, OrderLimit, Inventory")] CartViewModel cartViewModel )
         {
-            try
-            {
-                // TODO: Add insert logic here
+            CartMessageViewModel cartMessageViewModel = new CartMessageViewModel();
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (ModelState.IsValid)
             {
-                return View();
+                CartDTO cartDTO = CartMapper.Map<CartDTO>(cartViewModel);
+                cartDTO.UserID = new Guid(Session["UserID"].ToString());
+                try
+                {
+                    cartBusinessContext.AddItemToCart(cartDTO);
+                    cartMessageViewModel.SuccessMessage = "Item Successfuly Added to Cart";
+                    cartMessageViewModel.IsLoggedIn = true;
+                    return View(cartMessageViewModel);
+                }
+                catch(ItemAlreadyInCartException ex)
+                {
+                    cartMessageViewModel.ErrorMessages.Add("Item is already present in the cart");
+                    return View(cartMessageViewModel);
+                }
+                catch(Exception ex)
+                {
+                    return View("InternalError");
+                }
+            }
+            else
+            {
+                foreach(var modelState in ModelState.Values)
+                {
+                    foreach(var err in modelState.Errors)
+                    {
+                        cartMessageViewModel.ErrorMessages.Add(err.ErrorMessage.ToString());
+                    }
+                }
+                return View(cartMessageViewModel);
             }
         }
 
-        // GET: Cart/Edit/5
-        public ActionResult Edit(int id)
+        
+        public ActionResult ViewCart()
         {
-            return View();
+            CartsDTO newCartsDTO = cartBusinessContext.GetCart(new Guid(Session["UserID"].ToString()));
+            CartsViewModel cartsViewModel = new CartsViewModel();
+            cartsViewModel.CartItems = CartsMapper.Map<IEnumerable<CartVariantDTO>, IEnumerable<CartVariantViewModel>>(newCartsDTO.CartItems);
+            cartsViewModel.CartItems = cartsViewModel.CartItems.ToList();
+            cartsViewModel.SubTotal = newCartsDTO.SubTotal;
+            cartsViewModel.IsLoggedIn = true;
+            return View(cartsViewModel);
         }
 
-        // POST: Cart/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+
+        public ActionResult RemoveItem(Guid VariantID)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Cart/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Cart/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            cartBusinessContext.RemoveItem(new Guid(Session["UserID"].ToString()), VariantID);
+            return RedirectToAction("ViewCart");
         }
     }
 }

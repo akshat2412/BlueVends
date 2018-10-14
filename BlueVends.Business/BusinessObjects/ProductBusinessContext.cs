@@ -54,7 +54,7 @@ namespace BlueVends.Business.BusinessObjects
             {
                 bool exists = productDatabaseContext.ProductExists(ProductID);
             }
-            catch (ProductNotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw new ProductDoesNotExistsException();
             }
@@ -81,5 +81,19 @@ namespace BlueVends.Business.BusinessObjects
             }
         }
 
+        public void Changes(Guid UserID)
+        {
+            productDatabaseContext.Changes(UserID);
+        }
+
+        public AnalyticsDTO GetTopProductsByCat()
+        {
+            AnalyticsDTO analyticsDTO = productDatabaseContext.GetTopProductsByCat();
+            foreach(var category in analyticsDTO.Categories)
+            {
+                category.Products = category.Products.Take(4);
+            }
+            return analyticsDTO;
+        }
     }
 }

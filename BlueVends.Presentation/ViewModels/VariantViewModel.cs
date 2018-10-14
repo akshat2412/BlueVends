@@ -9,5 +9,6 @@ namespace BlueVends.Presentation.ViewModels
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
+        public ProductViewModel Product { get; set; }
     }
 }

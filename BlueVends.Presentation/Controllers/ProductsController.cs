@@ -75,7 +75,6 @@ namespace BlueVends.Presentation.Controllers
         {
             ProductViewModel viewModel = new ProductViewModel();
             ProductDTO productDTO = new ProductDTO();
-            ViewBag.LoggedIn = "true";
             try
             {
                 productDTO = productBusinessContext.GetProduct(ProductID);
@@ -89,6 +88,7 @@ namespace BlueVends.Presentation.Controllers
                 return View("Internal Error");
             }
             viewModel = ProductProductVMMapper.Map<ProductDTO, ProductViewModel>(productDTO);
+            viewModel.IsLoggedIn = true;
             return View(viewModel);
 
         }
@@ -98,7 +98,7 @@ namespace BlueVends.Presentation.Controllers
         {
             if (Session["UserID"] != null)
             {
-                ViewBag.LoggedIn = "True";
+                ViewBag.IsLoggedIn = "True";
             }
 
             if (String.IsNullOrEmpty(SearchString))
@@ -120,76 +120,6 @@ namespace BlueVends.Presentation.Controllers
                 return View("InternalError");
             }
         }
-        // GET: Products/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Products/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Products/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Products/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Products/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Products/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
     }
 }

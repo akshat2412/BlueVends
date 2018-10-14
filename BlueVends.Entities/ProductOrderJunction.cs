@@ -18,6 +18,7 @@ namespace BlueVends.Entities
         public string Variant { get; set; }
         public System.Guid OrderID { get; set; }
         public System.Guid ProductID { get; set; }
+        public Nullable<int> OrderQuantity { get; set; }
     
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }

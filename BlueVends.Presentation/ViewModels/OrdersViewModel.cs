@@ -8,5 +8,6 @@ namespace BlueVends.Presentation.ViewModels
     public class OrdersViewModel
     {
         public IEnumerable<OrderViewModel> Orders;
+        public bool IsLoggedIn { get; set; }
     }
 }

@@ -54,9 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBObjects\AddressDatabaseContext.cs" />
     <Compile Include="DBObjects\CartDatabaseContext.cs" />
+    <Compile Include="DBObjects\OrderDataBaseContext.cs" />
     <Compile Include="DBObjects\ProductDatabaseContext.cs" />
     <Compile Include="DBObjects\UserDatabase.cs" />
+    <Compile Include="Exceptions\AlreadyPresentException.cs" />
     <Compile Include="Exceptions\CategoryNotFoundException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\ProductNotFoundException.cs" />

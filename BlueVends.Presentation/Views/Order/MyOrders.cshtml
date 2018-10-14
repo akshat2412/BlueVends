@@ -1,0 +1,25 @@
+﻿@model BlueVends.Presentation.ViewModels.OrdersViewModel
+
+@{
+    ViewBag.Title = "MyOrders";
+    if(Model.IsLoggedIn == true)
+    {
+        ViewBag.IsLoggedIn = true;  
+    }
+}
+
+<h2>My Orders</h2>
+<br />
+
+<div class="row">
+    @foreach(var order in Model.Orders)
+    {
+        <div class="col-md-7">
+            <h4>@order.OrderDate.ToString("dd/MM/yyyy")</h4>
+            <p><b>Total : </b>$@order.TotalDue</p>
+            <p><b>Status : </b>@order.Status</p>
+            <hr />
+        </div>
+        <hr/>
+    }
+</div>

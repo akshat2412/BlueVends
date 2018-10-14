@@ -13,7 +13,6 @@ namespace BlueVends.Presentation.Controllers
 {
     public class LoginController : Controller
     {
-        // GET: Login
 
         UserBusinessContext userBusinessContext;
         IMapper LoginMapper;
@@ -33,7 +32,6 @@ namespace BlueVends.Presentation.Controllers
         }
 
 
-        // GET: Login/Details/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login([Bind(Include = "UserName, Password" )] LoginViewModel loginViewModel)
@@ -46,7 +44,7 @@ namespace BlueVends.Presentation.Controllers
                 {
                     UserBasicDTO loggedInUserDTO = userBusinessContext.LoginUser(userLoginDTO);
                     Session["UserID"] = loggedInUserDTO.ID;
-                    ViewBag.LoggedIn = "True";
+                    if(Request.UrlReferrer.ToString() == "a") { return null; }
                     return RedirectToAction("Index", "Home");
                 }
                 catch(InvalidLoginException ex)
@@ -62,72 +60,6 @@ namespace BlueVends.Presentation.Controllers
                 }
             }
             return View(loginViewModel);
-        }
-
-        // GET: Login/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Login/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Login/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Login/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Login/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Login/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

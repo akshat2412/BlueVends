@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BlueVendsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BlueVendsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="ID" />
@@ -75,6 +75,7 @@
           <Property Name="Variant" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OrderID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProductID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderQuantity" Type="int" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -331,8 +332,7 @@
             <End Role="Variant" EntitySet="Variant" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BlueVendsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -421,6 +421,7 @@
           <Property Name="ProductID" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="Self.FK_dbo_ProductOrderJunction_dbo_Order_OrderID" FromRole="ProductOrderJunction" ToRole="Order" />
           <NavigationProperty Name="Product" Relationship="Self.FK_dbo_ProductOrderJunction_dbo_Product_ProductID" FromRole="ProductOrderJunction" ToRole="Product" />
+          <Property Name="OrderQuantity" Type="Int32" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -722,6 +723,7 @@
           <EntitySetMapping Name="ProductOrderJunction">
             <EntityTypeMapping TypeName="BlueVendsDBModel.ProductOrderJunction">
               <MappingFragment StoreEntitySet="ProductOrderJunction">
+                <ScalarProperty Name="OrderQuantity" ColumnName="OrderQuantity" />
                 <ScalarProperty Name="SellingPrice" ColumnName="SellingPrice" />
                 <ScalarProperty Name="Variant" ColumnName="Variant" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />

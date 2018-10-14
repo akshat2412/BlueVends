@@ -101,6 +101,7 @@ namespace BlueVends.DataAccess.DBObjects
         {
             User user = userDTOUserMapper.Map<UserDTO, User>(userDTO);
             user.ID = Guid.NewGuid();
+            user.Role.Add(dbContext.Role.Where(r => r.Name == "Normal").FirstOrDefault());
             dbContext.User.Add(user);
             dbContext.SaveChanges();
             UserBasicDTO newUserBasicDTO = userUserBasicDTOMapper.Map<User, UserBasicDTO>(user);
@@ -143,6 +144,19 @@ namespace BlueVends.DataAccess.DBObjects
             //}
             //return newUserOrdersDTO;
             return newUserOrderDTO;
+        }
+
+        public bool CheckAdmin(Guid UserID)
+        {
+            User user = dbContext.User.Where(u => u.ID == UserID).Include(u => u.Role).First();
+            foreach(var role in user.Role)
+            {
+                if(role.Name == "Admin")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

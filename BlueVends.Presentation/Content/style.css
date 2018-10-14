@@ -7271,11 +7271,12 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6; } }
 
 @font-face {
-  font-family: 'icomoon';
-  src: url("../fonts/icomoon/icomoon.eot?srf3rx");
-  src: url("../fonts/icomoon/icomoon.eot?srf3rx#iefix") format("embedded-opentype"), url("../fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"), url("../fonts/icomoon/icomoon.woff?srf3rx") format("woff"), url("../fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
-  font-weight: normal;
-  font-style: normal; }
+    font-family: 'icomoon';
+    src: url("icomoon.eot?srf3rx");
+    src: url("icomoon.eot?srf3rx#iefix") format("embedded-opentype"), url("icomoon.ttf?srf3rx") format("truetype"), url("icomoon.woff?srf3rx") format("woff"), url("icomoon.svg?srf3rx#icomoon") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
 
 /* =======================================================
 *
@@ -7718,11 +7719,12 @@ h1, h2, h3, h4, h5,
       .product-entry .desc h2 a {
         color: #000; }
     .product-entry .desc span.price {
-      display: block;
-      font-family: "Rokkitt", Georgia, serif;
-      font-size: 18px;
-      color: #000;
-      font-weight: 400; }
+        display: block;
+        font-family: "Rokkitt", Georgia, serif;
+        font-size: 18px;
+        color: #F6546A;
+        font-weight: 400;
+    }
 
 .block-27 ul, .block-27 ul li {
   padding: 0;
@@ -7826,11 +7828,12 @@ h1, h2, h3, h4, h5,
   .product-detail-wrap .product-desc .price {
     width: 100%; }
     .product-detail-wrap .product-desc .price span {
-      width: 100%;
-      display: inline-block;
-      font-weight: 400;
-      font-size: 18px;
-      color: #000; }
+        width: 100%;
+        display: inline-block;
+        font-weight: 400;
+        font-size: 18px;
+        color: #F6546A;
+    }
     .product-detail-wrap .product-desc .price .rate {
       font-size: 13px;
       color: #b3b3b3; }

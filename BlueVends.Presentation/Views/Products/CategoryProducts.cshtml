@@ -41,9 +41,13 @@
                         <img src = "@product.ImageURL" class="img-fluid" alt="Free html5 bootstrap 4 template" style=" height:160px;width:140px;">
                     </a>
                     <div class="desc">
-                        <h2><a href="#">@product.Name</a></h2>
+                        <h2><a href="@Url.Action("ProductDetail", "Products", new { ProductID = product.ID})">@product.Name</a></h2>
                         <span class="price">$@product.ListingPrice</span>
                     </div>
+                    @if(product.Discount != 0)
+                    {
+                        <p>Discount Available</p>
+                    }
                 </div>
             </div>
         }

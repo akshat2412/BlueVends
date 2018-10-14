@@ -36,7 +36,6 @@ namespace BlueVends.Presentation.Controllers
             try
             {
 
-                // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
                     UserDTO userDTO = RegistrationVMMapper.Map<UserRegistrationViewModel, UserDTO>(userRegistrationViewModel);
@@ -58,28 +57,6 @@ namespace BlueVends.Presentation.Controllers
                 ModelState.AddModelError("", "Something went wrong. Please try after some time");
             }
             return View("Error");
-        }
-
-        // GET: Register/Edit/5
-        public ActionResult Success()
-        {
-            return View();
-        }
-
-        // POST: Register/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
