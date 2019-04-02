@@ -1,27 +1,19 @@
-﻿using BlueVends.Business.BusinessObjects;
+﻿using AutoMapper;
+using BlueVends.Business.BusinessObjects;
+using BlueVends.Presentation.Mappers.Home;
 using BlueVends.Presentation.ViewModels;
 using BlueVends.Shared.DTO.Product;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using AutoMapper;
+
 namespace BlueVends.Presentation.Controllers
 {
     public class HomeController : Controller
     {
-        IMapper AnalyticsMapper;
+        private IMapper _AnalyticsMapper;
         public HomeController()
         {
-            var AnalyticsConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<AnalyticsDTO, AnalyticsViewModel>();
-                cfg.CreateMap<CategoryProductsDTO, CategoryProductsViewModel>();
-                cfg.CreateMap<ProductDTO, ProductViewModel>();
-            });
-
-
-            AnalyticsMapper = new Mapper(AnalyticsConfig);
+            _AnalyticsMapper = AutoMappers.AnalyticsMapper;
         }
         public ActionResult Index()
         {
@@ -38,7 +30,7 @@ namespace BlueVends.Presentation.Controllers
             try
             {
                 analyticsDTO = productBusinessContext.GetTopProductsByCat();
-                analyticsViewModel = AnalyticsMapper.Map<AnalyticsDTO, AnalyticsViewModel>(analyticsDTO);
+                analyticsViewModel = _AnalyticsMapper.Map<AnalyticsDTO, AnalyticsViewModel>(analyticsDTO);
                 return View(analyticsViewModel);
             }
             catch (Exception)

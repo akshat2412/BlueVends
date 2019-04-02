@@ -1,13 +1,11 @@
-﻿using BlueVends.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using BlueVends.Business.BusinessObjects;
-using BlueVends.Shared.DTO.User;
 using BlueVends.Business.Exceptions;
+using BlueVends.Presentation.Mappers.Login;
+using BlueVends.Presentation.ViewModels;
+using BlueVends.Shared.DTO.User;
+using System;
+using System.Web.Mvc;
 
 namespace BlueVends.Presentation.Controllers
 {
@@ -15,15 +13,11 @@ namespace BlueVends.Presentation.Controllers
     {
 
         UserBusinessContext userBusinessContext;
-        IMapper LoginMapper;
+        IMapper _LoginMapper;
         public LoginController()
         {
             userBusinessContext = new UserBusinessContext();
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<LoginViewModel, UserLoginDTO>();
-            });
-
-            LoginMapper = new Mapper(config);
+            _LoginMapper = AutoMappers.LoginMapper;
         }
 
         public ActionResult Login()
@@ -39,7 +33,7 @@ namespace BlueVends.Presentation.Controllers
 
             if (ModelState.IsValid)
             {
-                UserLoginDTO userLoginDTO = LoginMapper.Map<LoginViewModel, UserLoginDTO>(loginViewModel);
+                UserLoginDTO userLoginDTO = _LoginMapper.Map<LoginViewModel, UserLoginDTO>(loginViewModel);
                 try
                 {
                     UserBasicDTO loggedInUserDTO = userBusinessContext.LoginUser(userLoginDTO);

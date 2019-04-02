@@ -177,6 +177,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HTML Helpers\ImageHelper.cs" />
+    <Compile Include="Mappers\Cart\AutoMappers.cs" />
+    <Compile Include="Mappers\Home\AutoMappers.cs" />
+    <Compile Include="Mappers\Login\AutoMappers.cs" />
+    <Compile Include="Mappers\Order\AutoMappers.cs" />
+    <Compile Include="Mappers\Products\AutoMappers.cs" />
+    <Compile Include="Mappers\Register\AutoMappers.cs" />
+    <Compile Include="Mappers\User\AutoMappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\AnalyticsViewModel.cs" />

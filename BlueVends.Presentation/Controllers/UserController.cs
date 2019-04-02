@@ -1,15 +1,12 @@
-﻿using BlueVends.Business.BusinessObjects;
+﻿using AutoMapper;
+using BlueVends.Business.BusinessObjects;
 using BlueVends.Presentation.ActionFilters;
+using BlueVends.Presentation.Mappers.User;
 using BlueVends.Presentation.ViewModels;
 using BlueVends.Shared.DTO.User;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using AutoMapper;
-using BlueVends.Shared.DTO.Order;
-using BlueVends.Shared.DTO.Shared;
 
 namespace BlueVends.Presentation.Controllers
 {
@@ -17,17 +14,12 @@ namespace BlueVends.Presentation.Controllers
     public class UserController : Controller
     {
         UserBusinessContext userBusinessContext = new UserBusinessContext();
-        IMapper OrdersVMMapper;
+        IMapper _OrdersVMMapper;
         // GET: User
 
         public UserController()
         {
-            var OrdersDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<OrderDTO, OrderViewModel>();
-                cfg.CreateMap<OrderProductDTO, OrderProductViewModel>();
-            });
-
-            OrdersVMMapper = new Mapper(OrdersDTOConfig);
+            _OrdersVMMapper = AutoMappers.OrdersVMMapper;
         }
         public ActionResult Orders()
         {
@@ -36,7 +28,7 @@ namespace BlueVends.Presentation.Controllers
             try
             {
                 UserOrdersDTO newuserOrdersDTO = userBusinessContext.GetOrders(new Guid(Session["UserID"].ToString()));
-                ordersViewModel.Orders = OrdersVMMapper.Map<IEnumerable<UserOrderDTO>, IEnumerable<OrderViewModel>>(newuserOrdersDTO.Orders);
+                ordersViewModel.Orders = _OrdersVMMapper.Map<IEnumerable<UserOrderDTO>, IEnumerable<OrderViewModel>>(newuserOrdersDTO.Orders);
                 return View(ordersViewModel);
             }
             catch(Exception ex)

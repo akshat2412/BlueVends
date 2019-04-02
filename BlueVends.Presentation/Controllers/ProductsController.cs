@@ -1,48 +1,28 @@
-﻿using BlueVends.Business.BusinessObjects;
-using BlueVends.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
-using BlueVends.Shared.DTO.Product;
+﻿using AutoMapper;
+using BlueVends.Business.BusinessObjects;
 using BlueVends.Business.Exceptions;
 using BlueVends.Presentation.ActionFilters;
-using BlueVends.Shared.DTO.Variant;
+using BlueVends.Presentation.Mappers.Products;
+using BlueVends.Presentation.ViewModels;
+using BlueVends.Shared.DTO.Product;
+using System;
+using System.Web.Mvc;
 
 namespace BlueVends.Presentation.Controllers
 {
     public class ProductsController : Controller
     {
         ProductBusinessContext productBusinessContext = new ProductBusinessContext();
-        IMapper CategoryProductVMMapper;
-        IMapper ProductProductVMMapper;
-        IMapper ProductsSearchResultVMMapper;
+        IMapper _CategoryProductVMMapper;
+        IMapper _ProductProductVMMapper;
+        IMapper _ProductsSearchResultVMMapper;
         // GET: Products
 
         public ProductsController()
         {
-            var productCollectionDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<ProductDTO, ProductViewModel>();
-                cfg.CreateMap<VariantDTO, VariantViewModel>();
-                cfg.CreateMap<CategoryProductsDTO, CategoryProductsViewModel>();
-            });
-
-            var productDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<ProductDTO, ProductViewModel>();
-                cfg.CreateMap<VariantDTO, VariantViewModel>();
-            });
-
-            var productSearchResultDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<ProductDTO, ProductViewModel>();
-                cfg.CreateMap<VariantDTO, VariantViewModel>();
-                cfg.CreateMap<ProductsSearchResultDTO, ProductsSearchResultViewModel>();
-            });
-
-            CategoryProductVMMapper = new Mapper(productCollectionDTOConfig);
-            ProductProductVMMapper = new Mapper(productDTOConfig);
-            ProductsSearchResultVMMapper = new Mapper(productSearchResultDTOConfig);
+            _CategoryProductVMMapper = AutoMappers.CategoryProductVMMapper;
+            _ProductProductVMMapper = AutoMappers.ProductProductVMMapper;
+            _ProductsSearchResultVMMapper = AutoMappers.ProductsSearchResultVMMapper;
         }
 
         public ActionResult CategoryProducts(string CategoryName)
@@ -62,7 +42,7 @@ namespace BlueVends.Presentation.Controllers
             {
                 return View("Internal Error");
             }
-            viewModel = CategoryProductVMMapper.Map<CategoryProductsDTO, CategoryProductsViewModel>(categoryProductsDTO);
+            viewModel = _CategoryProductVMMapper.Map<CategoryProductsDTO, CategoryProductsViewModel>(categoryProductsDTO);
             if(Session["UserID"] != null)
             {
                 viewModel.IsLoggedIn = true;
@@ -87,7 +67,7 @@ namespace BlueVends.Presentation.Controllers
             {
                 return View("Internal Error");
             }
-            viewModel = ProductProductVMMapper.Map<ProductDTO, ProductViewModel>(productDTO);
+            viewModel = _ProductProductVMMapper.Map<ProductDTO, ProductViewModel>(productDTO);
             viewModel.IsLoggedIn = true;
             return View(viewModel);
 
@@ -111,7 +91,7 @@ namespace BlueVends.Presentation.Controllers
             try
             {
                 newProductsSearchResultDTO = productBusinessContext.GetProductsWithString(SearchString);
-                viewModel = ProductsSearchResultVMMapper.Map<ProductsSearchResultDTO, ProductsSearchResultViewModel>(newProductsSearchResultDTO);
+                viewModel = _ProductsSearchResultVMMapper.Map<ProductsSearchResultDTO, ProductsSearchResultViewModel>(newProductsSearchResultDTO);
                 ViewBag.SearchString = SearchString;
                 return View(viewModel);
             }

@@ -1,27 +1,22 @@
-﻿using BlueVends.Presentation.ViewModels;
+﻿using AutoMapper;
 using BlueVends.Business.BusinessObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
-using BlueVends.Shared.DTO.User;
 using BlueVends.Business.Exceptions;
+using BlueVends.Presentation.Mappers.Register;
+using BlueVends.Presentation.ViewModels;
+using BlueVends.Shared.DTO.User;
+using System;
+using System.Web.Mvc;
+
 namespace BlueVends.Presentation.Controllers
 {
     public class RegisterController : Controller
     {
         UserBusinessContext userBusinessContext;
-        IMapper RegistrationVMMapper;
+        IMapper _RegistrationVMMapper;
         public RegisterController()
         {
             userBusinessContext = new UserBusinessContext();
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<UserRegistrationViewModel, UserDTO>();
-            });
-
-            RegistrationVMMapper = new Mapper(config);
+            _RegistrationVMMapper = AutoMappers.RegistrationVMMapper;
         }
 
 
@@ -38,7 +33,7 @@ namespace BlueVends.Presentation.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    UserDTO userDTO = RegistrationVMMapper.Map<UserRegistrationViewModel, UserDTO>(userRegistrationViewModel);
+                    UserDTO userDTO = _RegistrationVMMapper.Map<UserRegistrationViewModel, UserDTO>(userRegistrationViewModel);
                     UserBasicDTO newUserBasicDTO = userBusinessContext.RegisterUser(userDTO);
                     return View("Success");
                 }

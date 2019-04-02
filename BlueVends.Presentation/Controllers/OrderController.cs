@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using BlueVends.Presentation.ActionFilters;
-using AutoMapper;
+﻿using AutoMapper;
 using BlueVends.Business.BusinessObjects;
+using BlueVends.Business.Exceptions;
+using BlueVends.Presentation.ActionFilters;
+using BlueVends.Presentation.Mappers.Order;
 using BlueVends.Presentation.ViewModels;
 using BlueVends.Shared.DTO.Order;
-using BlueVends.Business.Exceptions;
-using BlueVends.Shared.DTO.Shared;
-using BlueVends.Shared.DTO.Product;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace BlueVends.Presentation.Controllers
 {
@@ -18,25 +15,13 @@ namespace BlueVends.Presentation.Controllers
     public class OrderController : Controller
     {
         OrderBusinessContext orderBusinessContext;
-        IMapper AddressMapper;
-        IMapper OrdersMapper;
+        IMapper _AddressMapper;
+        IMapper _OrdersMapper;
         public OrderController()
         {
             orderBusinessContext = new OrderBusinessContext();
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<AddressViewModel, AddressDTO>();
-            });
-
-            AddressMapper = new Mapper(config);
-
-            var config2 = new MapperConfiguration(cfg => {
-                cfg.CreateMap<OrderDTO, OrderViewModel>().ForMember(x => x.Products, opt => opt.Ignore());
-                //cfg.CreateMap<OrderProductDTO, OrderProductViewModel>();
-                //cfg.CreateMap<ProductDTO, ProductViewModel>();
-                //cfg.CreateMap<OrderDTO, OrderViewModel>();
-            });
-
-            OrdersMapper = new Mapper(config);
+            _AddressMapper = AutoMappers.AddressMapper;
+            _OrdersMapper = AutoMappers.OrdersMapper;
         }
 
         public OrdersDTO OrdersDTO { get; private set; }
@@ -53,7 +38,7 @@ namespace BlueVends.Presentation.Controllers
             {
                 try
                 {
-                    AddressDTO addressDTO = AddressMapper.Map<AddressDTO>(addressViewModel);
+                    AddressDTO addressDTO = _AddressMapper.Map<AddressDTO>(addressViewModel);
                     orderBusinessContext.PlaceOrder(new Guid(Session["UserID"].ToString()), addressDTO);
                     return View("Success");
                 }
@@ -74,7 +59,7 @@ namespace BlueVends.Presentation.Controllers
             try
             {
                 OrdersDTO ordersDTO = orderBusinessContext.GetOrders(new Guid(Session["UserID"].ToString()));
-                ordersViewModel.Orders = OrdersMapper.Map<IEnumerable<OrderDTO>, IEnumerable<OrderViewModel>>(ordersDTO.Orders);
+                ordersViewModel.Orders = _OrdersMapper.Map<IEnumerable<OrderDTO>, IEnumerable<OrderViewModel>>(ordersDTO.Orders);
                 ordersViewModel.IsLoggedIn = true;
             }
             catch(NoOrderException ex)

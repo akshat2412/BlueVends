@@ -1,17 +1,15 @@
-﻿using BlueVends.Business.BusinessObjects;
+﻿using AutoMapper;
+using BlueVends.Business.BusinessObjects;
+using BlueVends.Business.Exceptions;
 using BlueVends.Presentation.ActionFilters;
+using BlueVends.Presentation.Mappers.Cart;
+using BlueVends.Presentation.ViewModels;
+using BlueVends.Shared.DTO.Cart;
+using BlueVends.Shared.DTO.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using BlueVends.Business.Exceptions;
-using BlueVends.Presentation.ViewModels;
-using AutoMapper;
-using BlueVends.Shared.DTO.Cart;
-using BlueVends.Shared.DTO.Product;
-using BlueVends.Shared.DTO.Shared;
-using BlueVends.Shared.DTO.Variant;
 
 namespace BlueVends.Presentation.Controllers
 {
@@ -19,25 +17,17 @@ namespace BlueVends.Presentation.Controllers
     public class CartController : Controller
     {
         CartBusinessContext cartBusinessContext;
-        IMapper CartMapper;
-        IMapper CartsMapper;
+        private IMapper _CartMapper;
+        private IMapper _CartsMapper;
         public CartController()
         {
             cartBusinessContext = new CartBusinessContext();
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<CartViewModel, CartDTO>();
-            });
 
-            var config2 = new MapperConfiguration(cfg => {
-                cfg.CreateMap<ProductDTO, ProductViewModel>();
-                cfg.CreateMap<VariantDTO, VariantViewModel>();
-                cfg.CreateMap<CartVariantDTO, CartVariantViewModel>();
-            });
-
-            CartMapper = new Mapper(config);
-            CartsMapper = new Mapper(config2);
+            _CartMapper = AutoMappers.CartMapper;
+            _CartsMapper = AutoMappers.CartsMapper;
         }
-        // GET: Cart
+
+        // POST: Add item to cart
         [HttpPost]
         public ActionResult AddItem([Bind(Include = "VariantID, ProductID, OrderQuantity, OrderLimit, Inventory")] CartViewModel cartViewModel )
         {
@@ -45,7 +35,7 @@ namespace BlueVends.Presentation.Controllers
 
             if (ModelState.IsValid)
             {
-                CartDTO cartDTO = CartMapper.Map<CartDTO>(cartViewModel);
+                CartDTO cartDTO = _CartMapper.Map<CartDTO>(cartViewModel);
                 cartDTO.UserID = new Guid(Session["UserID"].ToString());
                 try
                 {
@@ -82,7 +72,7 @@ namespace BlueVends.Presentation.Controllers
         {
             CartsDTO newCartsDTO = cartBusinessContext.GetCart(new Guid(Session["UserID"].ToString()));
             CartsViewModel cartsViewModel = new CartsViewModel();
-            cartsViewModel.CartItems = CartsMapper.Map<IEnumerable<CartVariantDTO>, IEnumerable<CartVariantViewModel>>(newCartsDTO.CartItems);
+            cartsViewModel.CartItems = _CartsMapper.Map<IEnumerable<CartVariantDTO>, IEnumerable<CartVariantViewModel>>(newCartsDTO.CartItems);
             cartsViewModel.CartItems = cartsViewModel.CartItems.ToList();
             cartsViewModel.SubTotal = newCartsDTO.SubTotal;
             cartsViewModel.IsLoggedIn = true;
