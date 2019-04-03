@@ -3,10 +3,7 @@ using BlueVends.DataAccess.DBObjects;
 using BlueVends.Shared.DTO.Cart;
 using BlueVends.Shared.DTO.Order;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlueVends.Business.BusinessObjects
 {

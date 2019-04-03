@@ -1,26 +1,23 @@
-﻿using BlueVends.Entities;
+﻿using AutoMapper;
+using BlueVends.DataAccess.Mappers.OrderMappers;
+using BlueVends.Entities;
 using BlueVends.Shared.DTO.Cart;
 using BlueVends.Shared.DTO.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlueVends.DataAccess.DBObjects
 {
     public class OrderDataBaseContext
     {
         BlueVendsDBEntities dbContext;
-        IMapper OrderMapper;
+        IMapper _OrderMapper;
+
         public OrderDataBaseContext()
         {
             dbContext = new BlueVendsDBEntities();
-            var OrdersConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Order, OrderDTO>();
-            });
-            OrderMapper = new Mapper(OrdersConfig);
+            _OrderMapper = AutoMappers.OrderMapper;
         }
 
         public void PlaceOrder(Guid userID, CartsDTO cartsDTO, Guid addressID)
@@ -41,7 +38,7 @@ namespace BlueVends.DataAccess.DBObjects
         {
             var Orders = dbContext.Order.Where(o => o.UserID == UserID) ;
             OrdersDTO ordersDTO = new OrdersDTO();
-            ordersDTO.Orders = OrderMapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(Orders);
+            ordersDTO.Orders = _OrderMapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(Orders);
             return ordersDTO;
         }
     }

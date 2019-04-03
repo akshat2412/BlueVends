@@ -1,31 +1,25 @@
-﻿using BlueVends.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using BlueVends.DataAccess.Mappers.AddressMappers;
+using BlueVends.Entities;
 using BlueVends.Shared.DTO.Order;
+using System;
 
 namespace BlueVends.DataAccess.DBObjects
 {
     public class AddressDatabaseContext
     {
         BlueVendsDBEntities dbContext;
-        IMapper AddressMapper;
+        IMapper _AddressMapper;
 
         public AddressDatabaseContext()
         {
             dbContext = new BlueVendsDBEntities();
-            var Config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<AddressDTO, Address>();
-            });
-            AddressMapper = new Mapper(Config);
+            _AddressMapper = AutoMappers.AddressMapper;
         }
 
         public Guid AddAddress(Guid UserID, AddressDTO addressDTO)
         {
-            Address address = AddressMapper.Map<Address>(addressDTO);
+            Address address = _AddressMapper.Map<Address>(addressDTO);
             address.UserID = UserID;
             address.ID = Guid.NewGuid();
             dbContext.Address.Add(address);

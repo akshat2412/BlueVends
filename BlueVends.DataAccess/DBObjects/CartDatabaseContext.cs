@@ -1,32 +1,24 @@
-﻿using BlueVends.DataAccess.Exceptions;
+﻿using AutoMapper;
+using BlueVends.DataAccess.Exceptions;
+using BlueVends.DataAccess.Mappers.CartMappers;
 using BlueVends.Entities;
 using BlueVends.Shared.DTO.Cart;
+using BlueVends.Shared.DTO.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
-using AutoMapper;
-using BlueVends.Shared.DTO.Shared;
-using BlueVends.Shared.DTO.Product;
-using BlueVends.Shared.DTO.Variant;
+using System.Linq;
 
 namespace BlueVends.DataAccess.DBObjects
 {
     public class CartDatabaseContext
     {
         BlueVendsDBEntities dbContext = new BlueVendsDBEntities();
-        IMapper CartItemsMapper;
+        IMapper _CartItemsMapper;
 
         public CartDatabaseContext()
         {
-            var cartItemsConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Variant, VariantDTO>();
-                cfg.CreateMap<Cart, CartVariantDTO>();
-                cfg.CreateMap<Product, ProductDTO>();
-            });
-            CartItemsMapper = new Mapper(cartItemsConfig);
+            _CartItemsMapper = AutoMappers.CartItemsMapper;
         }
         public bool PresentInCart(CartDTO cartDTO)
         {
@@ -52,7 +44,7 @@ namespace BlueVends.DataAccess.DBObjects
         {
             var carts = dbContext.Cart.Include(c => c.Variant.Product).Where(c => c.UserID == UserID).ToList();
             CartsDTO cartsDTO = new CartsDTO();
-            cartsDTO.CartItems = CartItemsMapper.Map<IEnumerable<Cart>, IEnumerable<CartVariantDTO>>(carts);
+            cartsDTO.CartItems = _CartItemsMapper.Map<IEnumerable<Cart>, IEnumerable<CartVariantDTO>>(carts);
             return cartsDTO;
         }
 

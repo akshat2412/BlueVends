@@ -1,62 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using BlueVends.Entities;
-using BlueVends.Shared.DTO.Product;
-using System.Data.Entity;
+﻿using AutoMapper;
 using BlueVends.DataAccess.Exceptions;
-using BlueVends.Shared.DTO.Variant;
+using BlueVends.DataAccess.Mappers.ProductMappers;
+using BlueVends.Entities;
 using BlueVends.Shared.DTO.Cart;
+using BlueVends.Shared.DTO.Product;
+using BlueVends.Shared.DTO.Variant;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BlueVends.DataAccess.DBObjects
 {
     public class ProductDatabaseContext
     {
-        IMapper CategoryProductMapper;
-        IMapper ProductMapper;
-        IMapper ProductSearchMapper;
-        IMapper VariantMapper;
-        IMapper AnalyticsMapper;
+        IMapper _CategoryProductMapper;
+        IMapper _ProductMapper;
+        IMapper _ProductSearchMapper;
+        IMapper _VariantMapper;
+        IMapper _AnalyticsMapper;
         BlueVendsDBEntities dbContext;
+
         public ProductDatabaseContext()
         {
             dbContext = new BlueVendsDBEntities();
-            var productCollectionDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Variant, VariantDTO>();
-                cfg.CreateMap<Product, ProductDTO>();
-            });
 
-            var productDTOConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Product, ProductDTO>();
-                cfg.CreateMap<Variant, VariantDTO>();
-            });
-
-            var productsSearchDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Product, ProductDTO>();
-                cfg.CreateMap<Variant, VariantDTO>();
-            });
-
-            var VariantDTOConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Variant, VariantDTO>();
-                cfg.CreateMap<Product, ProductDTO>();
-            });
-
-            var AnalyticsConfig = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Variant, VariantDTO>();
-                cfg.CreateMap<Product, ProductDTO>();
-                cfg.CreateMap<Category, CategoryProductsDTO>().ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Product));
-            });
-
-
-            CategoryProductMapper = new Mapper(productCollectionDTOConfig);
-            ProductMapper = new Mapper(productDTOConfig);
-            ProductSearchMapper = new Mapper(productsSearchDTOConfig);
-            VariantMapper = new Mapper(VariantDTOConfig);
-            AnalyticsMapper = new Mapper(AnalyticsConfig);
+            _CategoryProductMapper = AutoMappers.CategoryProductMapper;
+            _ProductMapper = AutoMappers.ProductMapper;
+            _ProductSearchMapper = AutoMappers.ProductSearchMapper;
+            _VariantMapper = AutoMappers.VariantMapper;
+            _AnalyticsMapper = AutoMappers.AnalyticsMapper;
         }
 
         public bool CategoryExists(string CategoryName)
@@ -73,7 +46,7 @@ namespace BlueVends.DataAccess.DBObjects
             Category category = dbContext.Category.Include(c => c.Product).Where(c => c.Name == CategoryName).FirstOrDefault();
             IEnumerable<Product> products = category.Product;
             CategoryProductsDTO newcategoryProductsDTO = new CategoryProductsDTO();
-            newcategoryProductsDTO.Products = CategoryProductMapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
+            newcategoryProductsDTO.Products = _CategoryProductMapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
             newcategoryProductsDTO.Name = category.Name;
             return newcategoryProductsDTO;
         }
@@ -99,8 +72,8 @@ namespace BlueVends.DataAccess.DBObjects
         {
             Product product = dbContext.Product.Where(p => p.ID == ProductID).Include(p => p.Variant).FirstOrDefault();
             ProductDTO newproductDTO = new ProductDTO();
-            newproductDTO = ProductMapper.Map<Product, ProductDTO>(product);
-            newproductDTO.Variants = VariantMapper.Map<IEnumerable<Variant>, IEnumerable<VariantDTO>>(product.Variant);
+            newproductDTO = _ProductMapper.Map<Product, ProductDTO>(product);
+            newproductDTO.Variants = _VariantMapper.Map<IEnumerable<Variant>, IEnumerable<VariantDTO>>(product.Variant);
             return newproductDTO;
         }
 
@@ -108,7 +81,7 @@ namespace BlueVends.DataAccess.DBObjects
         {
             IEnumerable<Product> searchResults = dbContext.Product.Where(p => p.Name.Contains(SearchString)).Include(p => p.Category);
             ProductsSearchResultDTO newProductsSearchResultDTO = new ProductsSearchResultDTO();
-            newProductsSearchResultDTO.Products = ProductSearchMapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(searchResults);
+            newProductsSearchResultDTO.Products = _ProductSearchMapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(searchResults);
             return newProductsSearchResultDTO;
         }
 
@@ -162,7 +135,7 @@ namespace BlueVends.DataAccess.DBObjects
                 category.Product = category.Product.OrderByDescending(p => p.QuantitySold).ToList();
             }
             AnalyticsDTO analyticsDTO = new AnalyticsDTO();
-            analyticsDTO.Categories = AnalyticsMapper.Map<IEnumerable<Category>, IEnumerable<CategoryProductsDTO>>(Categories);
+            analyticsDTO.Categories = _AnalyticsMapper.Map<IEnumerable<Category>, IEnumerable<CategoryProductsDTO>>(Categories);
             return analyticsDTO;
         }
     }

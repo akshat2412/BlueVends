@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using BlueVends.Business.Exceptions;
 using BlueVends.DataAccess.DBObjects;
 using BlueVends.DataAccess.Exceptions;
 using BlueVends.Shared.DTO.Product;
-using BlueVends.Business.Exceptions;
+using System;
+using System.Linq;
 
 namespace BlueVends.Business.BusinessObjects
 {
